@@ -38,10 +38,15 @@ The server will start running on http://localhost:3000.
 You can use tools like cURL or Postman to interact with the API endpoints:
 
 Get all employees: GET /employees
+
 Get an employee by ID: GET /employees/:id
+
 Create a new employee: POST /employees
+
 Update an existing employee: PUT /employees/:id
+
 Delete an employee: DELETE /employees/:id
+
 Note: Replace :id with the actual employee ID.
 
 Data Persistence
