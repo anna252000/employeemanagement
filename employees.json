@@ -83,5 +83,22 @@
     "username": "azimsai",
     "password": "asdf1234",
     "id": "11e73581-a83c-48de-bc84-090334d7acce"
+  },
+  {
+    "salutation": "Mr",
+    "firstName": "Azeem",
+    "lastName": "S",
+    "email": "azimsai@gmail.com",
+    "phone": "9567255149",
+    "dob": "16-01-1986",
+    "gender": "Male",
+    "qualifications": "SSLC,PLUS TWO,GRADUATION,PG",
+    "address": "Arappuraveedu,Manvila, Kulathoor PO",
+    "city": "Thiruvananthapuram",
+    "state": "Kerala",
+    "country": "India",
+    "username": "azimsai",
+    "password": "asdf1234",
+    "id": "89c0ed97-759e-4f74-a723-d96a621650dc"
   }
 ]
