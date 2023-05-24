@@ -1,5 +1,5 @@
 # dummy-employee-api
 
-###  server
+### Start server
 
 `node index.js`
