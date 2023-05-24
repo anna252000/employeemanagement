@@ -24,42 +24,6 @@ function writeEmployeeData(employees) {
   fs.writeFileSync(employeeDataFile, data);
 }
 
-// Function to validate employee data
-function validateEmployeeData(employee) {
-  if (
-    !employee.salutation ||
-    !employee.firstName ||
-    !employee.lastName ||
-    !employee.email ||
-    !employee.phone ||
-    !employee.dob ||
-    !employee.gender ||
-    !employee.qualifications ||
-    !employee.address ||
-    !employee.city ||
-    !employee.state ||
-    !employee.country ||
-    !employee.username ||
-    !employee.password
-  ) {
-    return false;
-  }
-
-  if (!validateEmail(employee.email)) {
-    return false;
-  }
-
-  if (!validatePhone(employee.phone)) {
-    return false;
-  }
-
-  if (!validateDate(employee.dob)) {
-    return false;
-  }
-
-  return true;
-}
-
 // Function to validate email format
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -76,6 +40,62 @@ function validatePhone(phone) {
 function validateDate(date) {
   const dateRegex = /^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/;
   return dateRegex.test(date);
+}
+
+// Validate employee data
+function validateEmployeeData(employee) {
+  const errors = [];
+
+  if (!employee.salutation) {
+    errors.push("Salutation is required");
+  }
+  if (!employee.firstName) {
+    errors.push("First Name is required");
+  }
+  if (!employee.lastName) {
+    errors.push("Last Name is required");
+  }
+  if (!employee.email) {
+    errors.push("Email is required");
+  } else if (!validateEmail(employee.email)) {
+    errors.push("Invalid email format");
+  }
+  if (!employee.phone) {
+    errors.push("Phone is required");
+  } else if (!validatePhone(employee.phone)) {
+    errors.push("Invalid phone number format");
+  }
+  if (!employee.dob) {
+    errors.push("Date of Birth is required");
+  } else if (!validateDate(employee.dob)) {
+    errors.push("Invalid date format. Please use DD-MM-YYYY format");
+  }
+  if (!employee.gender) {
+    errors.push("Gender is required");
+  }
+  if (!employee.qualifications) {
+    errors.push("Qualifications are required");
+  }
+  if (!employee.address) {
+    errors.push("Address is required");
+  }
+  if (!employee.city) {
+    errors.push("City is required");
+  }
+  if (!employee.state) {
+    errors.push("State is required");
+  }
+  if (!employee.country) {
+    errors.push("Country is required");
+  }
+  if (!employee.username) {
+    errors.push("Username is required");
+  }
+  if (!employee.password) {
+    errors.push("Password is required");
+  }
+
+  return errors;
 }
 
 // Get all employees
@@ -100,9 +120,10 @@ app.get("/employees/:id", (req, res) => {
 app.post("/employees", (req, res) => {
   const employees = readEmployeeData();
   const newEmployee = req.body;
+  const validationErrors = validateEmployeeData(newEmployee);
 
-  if (!validateEmployeeData(newEmployee)) {
-    res.status(400).json({ error: "Invalid employee data" });
+  if (validationErrors.length > 0) {
+    res.status(400).json({ errors: validationErrors });
   } else {
     newEmployee.id = uuidv4();
     employees.push(newEmployee);
@@ -122,9 +143,9 @@ app.put("/employees/:id", (req, res) => {
     res.status(404).json({ error: "Employee not found" });
   } else {
     const updatedEmployee = req.body;
-
-    if (!validateEmployeeData(updatedEmployee)) {
-      res.status(400).json({ error: "Invalid employee data" });
+    const validationErrors = validateEmployeeData(updatedEmployee);
+    if (validationErrors.length > 0) {
+      res.status(400).json({ errors: validationErrors });
     } else {
       employees[employeeIndex] = {
         ...employees[employeeIndex],
