@@ -20,17 +20,18 @@ The Employee Management Program is a JavaScript-based application that allows yo
 1. Clone the repository:
 
    ```shell
-   git clone <repository_url>
+   git clone https://github.com/azimsai/dummy-employee-api.git
    cd employee-management-program
    npm install
-  
+   or
+   yarn install
+   ```
   Usage
 
    Start the API server:
    ```
      node server.js
-      or
-     yarn install
+      
    ```
 The server will start running on http://localhost:3000.
 
