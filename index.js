@@ -72,7 +72,7 @@ function validatePhone(phone) {
   return phoneRegex.test(phone);
 }
 
-// Function to validate date format (YYYY-MM-DD)
+// Function to validate date format (DD-MM-YYYY)
 function validateDate(date) {
   const dateRegex = /^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-\d{4}$/;
   return dateRegex.test(date);
