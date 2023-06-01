@@ -1,12 +1,18 @@
 const express = require("express");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
+const cors = require("cors");
 
 const app = express();
 const employeeDataFile = "employees.json";
 
 // Middleware to parse JSON data
-app.use(express.json());
+app.use(
+  express.json(),
+  cors({
+    origin: "http://localhost:5500", // Replace with your allowed origin
+  })
+);
 
 // Function to read employee data from JSON file
 function readEmployeeData() {
