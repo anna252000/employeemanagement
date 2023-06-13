@@ -10,7 +10,7 @@ const employeeDataFile = "employees.json";
 app.use(
   express.json(),
   cors({
-    origin: "http://localhost:5500", // Replace with your allowed origin
+    origin: "*", // Replace with your allowed origin
   })
 );
 
