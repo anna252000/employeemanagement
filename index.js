@@ -2,6 +2,8 @@ const express = require("express");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
+const path = require("path");
 
 const app = express();
 const employeeDataFile = "employees.json";
@@ -11,8 +13,10 @@ app.use(
   express.json(),
   cors({
     origin: "*", // Replace with your allowed origin
-  })
+  }),
+  fileUpload()
 );
+app.use(express.static(path.join(__dirname, "public")));
 
 // Function to read employee data from JSON file
 function readEmployeeData() {
@@ -176,6 +180,78 @@ app.delete("/employees/:id", (req, res) => {
     res.json({ message: "Employee deleted successfully" });
   }
 });
+
+// Upload an employee avatar
+app.post("/employees/:id/avatar", (req, res) => {
+  const { id } = req.params;
+  const { avatar } = req.files;
+
+  if (!avatar) {
+    return res.status(400).json({ error: "No avatar file provided" });
+  }
+
+  const uploadPath = path.join(__dirname, "public", "avatars", `${id}.jpg`);
+  const publicPath = `${id}.jpg`;
+  avatar.mv(uploadPath, (err) => {
+    if (err) {
+      console.error("Error uploading avatar:", err);
+      return res.status(500).json({ error: "Failed to upload avatar" });
+    }
+  });
+  updateEmployeeAvatar(id, publicPath);
+  res.json({ success: true });
+});
+
+// Get an employee avatar
+app.get("/employees/:id/avatar", (req, res) => {
+  const { id } = req.params;
+  const avatarPath = path.join(__dirname, "public", "avatars", `${id}.jpg`);
+
+  if (fs.existsSync(avatarPath)) {
+    res.sendFile(avatarPath);
+  } else {
+    res.sendFile(path.join(__dirname, "public", "default-avatar.jpg"));
+  }
+});
+
+// Function to update the employee object with the avatar URL and save it to employee.json
+
+function updateEmployeeAvatar(id, avatarUrl) {
+  const filePath = path.join(__dirname, "employees.json");
+
+  // Read the employee.json file
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading employee.json:", err);
+      return;
+    }
+
+    // Parse the JSON data
+    const employees = JSON.parse(data);
+
+    // Find the employee by ID
+    const employee = employees.find((emp) => emp.id === id);
+
+    if (employee) {
+      // Update the avatar URL
+      employee.avatar = avatarUrl;
+
+      // Convert the updated data back to JSON
+      const updatedData = JSON.stringify(employees, null, 2);
+
+      // Write the updated JSON data back to the file
+      fs.writeFile(filePath, updatedData, "utf8", (err) => {
+        if (err) {
+          console.error("Error writing employee.json:", err);
+          return;
+        }
+        console.log("Employee avatar URL updated successfully.");
+      });
+    } else {
+      console.log("Employee not found.");
+    }
+  });
+}
 
 // Start the server
 app.listen(3000, () => {
