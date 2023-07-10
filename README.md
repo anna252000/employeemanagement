@@ -26,14 +26,17 @@ The Employee Management Program is a JavaScript-based application that allows yo
    or
    yarn install
    ```
-  Usage
+
+   Usage
 
    Start the API server:
+
    ```
      node server.js
-      
+
    ```
-The server will start running on http://localhost:3000.
+
+   The server will start running on http://localhost:3000.
 
 You can use tools like cURL or Postman to interact with the API endpoints:
 
@@ -46,6 +49,10 @@ Create a new employee: POST /employees
 Update an existing employee: PUT /employees/:id
 
 Delete an employee: DELETE /employees/:id
+
+Upload employee avatar : POST /employees/:id/avatar
+
+Get employee avatar : GET /employees/:id/avatar
 
 Note: Replace :id with the actual employee ID.
 
