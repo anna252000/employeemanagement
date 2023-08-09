@@ -32,7 +32,7 @@ The Employee Management Program is a JavaScript-based application that allows yo
    Start the API server:
 
    ```
-     node server.js
+     node index.js
 
    ```
 
